@@ -6,14 +6,11 @@ public class ConsoleProgress implements Runnable {
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                System.out.print("\r Loading ... |.");
-                Thread.sleep(500);
-                System.out.print("\r Loading ... \\.");
-                Thread.sleep(500);
-                System.out.print("\r Loading ... —.");
-                Thread.sleep(500);
-                System.out.print("\r Loading ... /.");
-                Thread.sleep(500);
+                char[] loadingSymbols = {'|', '\\', '—', '/'};
+                for (char c : loadingSymbols) {
+                    System.out.print("\r Loading ... " + c + " .");
+                    Thread.sleep(500);
+                }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
