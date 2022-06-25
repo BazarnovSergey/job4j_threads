@@ -4,9 +4,9 @@ public class ConsoleProgress implements Runnable {
 
     @Override
     public void run() {
+        char[] loadingSymbols = {'|', '\\', '—', '/'};
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                char[] loadingSymbols = {'|', '\\', '—', '/'};
                 for (char c : loadingSymbols) {
                     System.out.print("\r Loading ... " + c + " .");
                     Thread.sleep(500);
