@@ -21,7 +21,7 @@ public class SingleLockList<T> implements Iterable<T> {
         list.add(value);
     }
 
-    public List<T> copy(List<T> list) {
+    public synchronized List<T> copy(List<T> list) {
         return new ArrayList<>(list);
     }
 
