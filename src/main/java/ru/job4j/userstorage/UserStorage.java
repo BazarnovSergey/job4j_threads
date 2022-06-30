@@ -13,7 +13,7 @@ public class UserStorage implements Storage {
 
     @Override
     public synchronized boolean add(User user) {
-        return userList.putIfAbsent(user.getId(), user) != null;
+        return userList.putIfAbsent(user.getId(), user) == null;
     }
 
     @Override
@@ -23,15 +23,18 @@ public class UserStorage implements Storage {
 
     @Override
     public synchronized boolean delete(User user) {
-        return userList.remove(user.getId()) != null;
+        return userList.remove(user.getId(), user);
     }
 
-    public synchronized void transfer(int fromId, int toId, int amount) {
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
+        boolean rsl = false;
         User userFrom = userList.get(fromId);
         User userTo = userList.get(toId);
-        if (userFrom != null && userFrom.getAmount() >= amount) {
+        if (userFrom != null && userTo != null && userFrom.getAmount() >= amount) {
             userList.get(fromId).setAmount(userFrom.getAmount() - amount);
             userList.get(toId).setAmount(userTo.getAmount() + amount);
+            rsl = true;
         }
+        return rsl;
     }
 }
