@@ -18,7 +18,6 @@ public final class User {
         return id;
     }
 
-
     public int getAmount() {
         return amount;
     }
