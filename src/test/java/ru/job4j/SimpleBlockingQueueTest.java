@@ -13,13 +13,17 @@ import static org.junit.Assert.*;
 public class SimpleBlockingQueueTest {
 
     @Test
-    public void whenFullList() throws InterruptedException {
+    public void whenThread2copyValueToList() throws InterruptedException {
         SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>(5);
         List<Integer> list = new ArrayList<>();
         Thread thread1 = new Thread(
                 () -> {
                     for (int i = 1; i <= 5; i++) {
-                        sbq.offer(i);
+                        try {
+                            sbq.offer(i);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
 
@@ -27,7 +31,11 @@ public class SimpleBlockingQueueTest {
         Thread thread2 = new Thread(
                 () -> {
                     for (int i = 1; i <= 5; i++) {
-                        list.addAll(Collections.singleton((Integer) sbq.poll()));
+                        try {
+                            list.addAll(Collections.singleton((Integer) sbq.poll()));
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
         );

@@ -11,34 +11,26 @@ public class SimpleBlockingQueue<T> {
 
     @GuardedBy("this")
     private final Queue<T> queue = new LinkedList<>();
-    private int capacity = 10;
+    private int capacity;
 
     public SimpleBlockingQueue(int capacity) {
         if (capacity <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Capacity must be a positive number");
         }
         this.capacity = capacity;
     }
 
-    public synchronized void offer(T value) {
+    public synchronized void offer(T value) throws InterruptedException {
         while (queue.size() == capacity) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            wait();
         }
         queue.add(value);
         notifyAll();
     }
 
-    public synchronized T poll() {
+    public synchronized T poll() throws InterruptedException {
         while (queue.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            wait();
         }
         T result = queue.remove();
         notifyAll();
