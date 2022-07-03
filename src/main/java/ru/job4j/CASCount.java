@@ -16,9 +16,6 @@ public class CASCount {
 
     public void increment() {
         int expectedValue;
-        if (count.get() == -1) {
-            throw new UnsupportedOperationException("Count is not impl.");
-        }
         do {
             expectedValue = count.get();
         } while (!count.compareAndSet(expectedValue, expectedValue + 1));
