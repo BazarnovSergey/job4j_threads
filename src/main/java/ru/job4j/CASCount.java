@@ -8,26 +8,23 @@ import java.util.concurrent.atomic.AtomicReference;
 @ThreadSafe
 public class CASCount {
 
-    private final AtomicReference<Integer> count = new AtomicReference<>();
-    final AtomicInteger current = new AtomicInteger(0);
+    private final AtomicInteger count = new AtomicInteger();
 
-    public CASCount(int value) {
-        count.set(value);
+    public CASCount(int capacity) {
+        count.set(capacity);
     }
 
     public void increment() {
+        int expectedValue;
         if (count.get() == -1) {
             throw new UnsupportedOperationException("Count is not impl.");
         }
         do {
-            current.set(count.get());
-        } while (!count.compareAndSet(current.get(), current.incrementAndGet()));
+            expectedValue = count.get();
+        } while (!count.compareAndSet(expectedValue, expectedValue + 1));
     }
 
     public int get() {
-        if (count.get() == -1) {
-            throw new UnsupportedOperationException("Count is not impl.");
-        }
         return count.get();
     }
 
