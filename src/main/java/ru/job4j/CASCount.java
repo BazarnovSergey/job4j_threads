@@ -3,15 +3,14 @@ package ru.job4j;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 @ThreadSafe
 public class CASCount {
 
-    private final AtomicInteger count = new AtomicInteger();
+    private final AtomicInteger count;
 
-    public CASCount(int capacity) {
-        count.set(capacity);
+    public CASCount() {
+        count = new AtomicInteger();
     }
 
     public void increment() {

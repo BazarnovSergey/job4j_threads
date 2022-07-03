@@ -10,7 +10,7 @@ public class CASCountTest {
     @Test
     public void when2ThreadsUseIncrementOperation5TimesEachThanCountGet10()
             throws InterruptedException {
-        CASCount casCount = new CASCount(0);
+        CASCount casCount = new CASCount();
         Thread thread1 = new Thread(
                 () -> {
                     for (int i = 0; i < 5; i++) {
