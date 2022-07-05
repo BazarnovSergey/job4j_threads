@@ -7,19 +7,17 @@ public class Cache {
     private final Map<Integer, Base> memory = new ConcurrentHashMap<>();
 
     public boolean add(Base model) {
-        if (memory.containsKey(model.getId())) {
-            return false;
-        }
-        memory.put(model.getId(), model);
-        return true;
+        return memory.putIfAbsent(model.getId(), model) == null;
     }
 
     public boolean update(Base model) {
-        return memory.computeIfPresent(model.getId(), (vol1, vol2) -> {
-                    if (model.getVersion() != vol2.getVersion()) {
+        return memory.computeIfPresent(model.getId(), (key, value) -> {
+                    if (model.getVersion() != value.getVersion()) {
                         throw new OptimisticException("Versions are not equal");
                     }
-                    return new Base(model.getId(), vol1 + 1);
+                    Base rsl = new Base(model.getId(), key + 1);
+                    rsl.setName(model.getName());
+                    return rsl;
                 }
         ) != null;
     }
