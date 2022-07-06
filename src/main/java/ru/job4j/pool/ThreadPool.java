@@ -13,7 +13,7 @@ public class ThreadPool {
     public ThreadPool() {
         int size = Runtime.getRuntime().availableProcessors();
         this.tasks = new SimpleBlockingQueue<>(size);
-        for (int i = 0; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             Thread thread = new Thread(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
