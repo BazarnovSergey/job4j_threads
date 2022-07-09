@@ -41,4 +41,9 @@ public class ParallelSearchIndex<T> extends RecursiveTask<Integer> {
         return -1;
     }
 
+    public static Integer search(String[] array, String value, int from, int to) {
+        ParallelSearchIndex<String> psi = new ParallelSearchIndex<>(array, value, from, to);
+        return psi.invoke();
+    }
+
 }
